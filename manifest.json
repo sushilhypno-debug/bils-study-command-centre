@@ -1,0 +1,10 @@
+{
+  "name": "BILS Study Command Centre",
+  "short_name": "BILS Study",
+  "start_url": "/bils-study-command-centre/",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#111827",
+  "description": "27-day BILS exam preparation command centre for Papers 1, 2, 4 and 6.",
+  "icons": []
+}
