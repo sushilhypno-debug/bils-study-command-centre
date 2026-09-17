@@ -5,8 +5,8 @@ const PLAN=[['18 Sep','P1','CPC: jurisdiction, institution of suits, parties/joi
 const SYL={P1:['CPC, 1908','Commercial Courts Act, 2015','Pleadings','Letters Patent Clauses 12 and 15','Constitution Articles 32, 133, 134, 136, 141, 226, 227','High Court Rules (Original Side), specified chapters','Specific Relief Act, 1963'],P2:['Companies Act, 1956 as in force','Companies Act, 2013','IBC company-related provisions','Companies (Management and Administration) Rules, 2014','Companies (Appointment and Qualification of Directors) Rules, 2014','Companies (Meetings of Board and its Powers) Rules, 2014'],P4:['Drafting / Annexure 1 precedents','Transfer of Property Act, 1882','RERA, specified chapters/sections','MOFA, 1963','Registration Act, 1908','Indian Succession Act, Part VI, sections 57–191','Maharashtra Stamp Act, Chapters I–VI + specified Schedule I Articles'],P6:['Maharashtra Public Trusts Act, specified chapters','Indian Trusts Act, 1882','Maharashtra Co-operative Societies Act, specified sections','Maharashtra Rent Control Act, 1999','Maharashtra Apartment Ownership Act, 1970','Prevention of Money Laundering Act, 2002','Arbitration & Conciliation Act, 1996','Limitation Act, 1963 without Schedules','Rules of Etiquette and Professional Conduct']};
 const DRAFT=['Agreement for Sale of Immovable Property','Public Notice','Accountable Receipt','Conveyance of Immovable Property','Purchase of a Flat in resale where society/company/condominium is yet to be formed','Agreement for Sale of a Flat in Co-operative Housing Society','Deed of Gift','Deed of Partnership','Deed of Partnership for Admitting a New Partner','Deed of Retirement','Deed of Dissolution of Partnership','Deed of Partnership of LLP','Deed of Release','Lease','Assignment of Lease','Surrender of Lease','Memorandum of Entry Recording Creation of Equitable Mortgage','Memorandum by Parties Recording Equitable Mortgage','Deed of English Mortgage','Deed of Re-conveyance of Mortgaged Property','Will','Codicil to Will','Revocation of Will','General Power of Attorney','Special Power of Attorney for admitting execution before Sub-Registrar','Power of Attorney to adopt and defend Legal Proceedings','Deed of Indemnity','Agreement of Leave and License','Deed of Cancellation','Deed of Rectification','Agreement of Tenancy','Agreement of Transfer of Tenancy','Surrender of Tenancy Rights','Letter of Attornment'];
 function localKey(){return 'bils27v2';}function loadLocal(){try{S=JSON.parse(localStorage.getItem(localKey())||'{}')}catch(e){}S.done=S.done||{};S.tr=S.tr||{};S.mist=S.mist||[];S.draft=S.draft||{};S.mocks=S.mocks||{}}function days(){return Math.max(0,Math.ceil((new Date('2026-10-15')-new Date())/86400000))}function idx(){let a=Math.floor((new Date()-new Date('2026-09-18'))/86400000);return Math.max(0,Math.min(PLAN.length-1,a))}function tag(p){return '<span class="tag '+(p==='P2'?'p2':p==='P4'?'p4':p==='P6'?'p6':'')+'">'+p+'</span>'}function persistLocal(){localStorage.setItem(localKey(),JSON.stringify(S))}async function cloudSave(){if(!user)return;clearTimeout(saveTimer);saveTimer=setTimeout(async()=>{await db.from('student_progress').upsert({user_id:user.id,data:S},{onConflict:'user_id'})},500)}function persist(){persistLocal();cloudSave()}async function loadCloud(){if(!user)return;const {data,error}=await db.from('student_progress').select('data').eq('user_id',user.id).maybeSingle();if(!error&&data?.data){S={...S,...data.data};persistLocal()}}
- async function auth(){
-  const email=document.getElementById('email').value.trim();
+async function auth(){
+  const email = document.getElementById('email').value.trim();
 
   if(!email){
     return msg('Enter your email address','err');
@@ -14,16 +14,17 @@ function localKey(){return 'bils27v2';}function loadLocal(){try{S=JSON.parse(loc
 
   msg('Sending login link...');
 
-  const {error}=await db.auth.signInWithOtp({
+  const { error } = await db.auth.signInWithOtp({
     email,
     options:{
-      emailRedirectTo:window.location.origin
+      emailRedirectTo: window.location.origin
     }
   });
 
   if(error){
     return msg(error.message,'err');
   }
-msg('Login link sent. Check your email and tap the link to continue.','msg');
+
+  msg('Login link sent. Check your email and tap the link to continue.','msg');
 }
 </script></body></html>
